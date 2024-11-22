@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Питання для Леона</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #question {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        button {
+            font-size: 18px;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            background: #00c6ff;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        button:hover {
+            background: #005f8a;
+            transform: scale(1.05);
+        }
+        button.selected {
+            background: #4caf50; /* Зелений колір для вибраної кнопки */
+            transform: none;
+        }
+        #result {
+            font-size: 42px;
+            font-weight: bold;
+            color: #ffeb3b;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div id="question">Леон, ти йдеш на завоз в понеділок?</div>
+    <div class="button-container">
+        <button id="yes-button" onclick="handleAnswer('yes', this)">Так</button>
+        <button id="no-button" onclick="handleAnswer('no', this)">Ні</button>
+    </div>
+
+    <script>
+        let currentQuestion = 0;
+        const questions = [
+            "Леон, ти йдеш на завоз в понеділок?",
+            "А в школу йдеш?",
+            "Сосав?"
+        ];
+
+        function handleAnswer(answer, button) {
+            resetButtons();
+            button.classList.add('selected');
+
+            if (currentQuestion === 1 && answer === 'no') {
+                swapButtons(); // Змінюємо місцями відповіді "Так" і "Ні"
+            }
+
+            // Перехід до наступного питання
+            if (currentQuestion < 2) {
+                currentQuestion++;
+                const delay = currentQuestion === 2 ? 1500 : 500;
+                setTimeout(() => {
+                    document.getElementById("question").textContent = questions[currentQuestion];
+                    resetButtons();
+
+                    // Якщо питання "Сосав?"
+                    if (currentQuestion === 2) {
+                        setTimeout(() => {
+                            document.body.innerHTML = `<div id='result'>Я знав 😏</div>`;
+                        }, 1500);
+                    }
+                }, delay);
+            }
+        }
+
+        function resetButtons() {
+            document.querySelectorAll('button').forEach(button => {
+                button.classList.remove('selected');
+            });
+        }
+
+        function swapButtons() {
+            const yesButton = document.getElementById("yes-button");
+            const noButton = document.getElementById("no-button");
+
+            // Міняємо місцями текст кнопок
+            const tempText = yesButton.textContent;
+            yesButton.textContent = noButton.textContent;
+            noButton.textContent = tempText;
+        }
+    </script>
+</body>
+</html>
